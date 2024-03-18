@@ -20,19 +20,8 @@ call git checkout refs/tags/%VERSION%
 call gclient sync
 
 echo =====[ Building V8 ]=====
-call gn gen out.gn\x64.release -args="target_os=""win"" target_cpu=""x64"" v8_use_external_startup_data=false v8_enable_i18n_support=false is_debug=false is_clang=false strip_debug_info=true symbol_level=0 v8_enable_pointer_compression=false is_component_build=true"
-
-call ninja -C out.gn\x64.release -t clean
-call ninja -C out.gn\x64.release v8
+call python3 tools\dev\v8gen.py x64.release -- v8_monolithic=true v8_use_external_startup_data=false use_custom_libcxx=false is_component_build=false treat_warnings_as_errors=false v8_symbol_level=0 is_clang=false
+call ninja -C out.gn\x64.release v8_monolith
 
 md output\v8\Lib\Win64DLL
-copy /Y out.gn\x64.release\v8.dll.lib output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8_libplatform.dll.lib output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8.dll output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8_libbase.dll output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8_libplatform.dll output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\zlib.dll output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8.dll.pdb output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8_libbase.dll.pdb output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\v8_libplatform.dll.pdb output\v8\Lib\Win64DLL\
-copy /Y out.gn\x64.release\zlib.dll.pdb output\v8\Lib\Win64DLL\
+copy /Y out.gn\x64.release\obj\v8_monolith.lib output\v8\Lib\Win64DLL\
