@@ -8,7 +8,7 @@ on:
         required: true
 
 env:
-  VERSION: 12.3.219.10
+  VERSION: 12.4.114
 
 jobs:
   build_windows_md:
