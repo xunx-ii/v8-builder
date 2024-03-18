@@ -5,7 +5,7 @@ echo =====[ Getting Depot Tools ]=====
 powershell -command "Invoke-WebRequest https://storage.googleapis.com/chrome-infra/depot_tools.zip -O depot_tools.zip"
 7z x depot_tools.zip -o*
 set PATH=%CD%\depot_tools;%PATH%
-set GYP_MSVS_VERSION=2019
+set GYP_MSVS_VERSION=2022
 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
 call gclient
 
@@ -14,10 +14,8 @@ cd v8
 
 echo =====[ Fetching V8 ]=====
 call fetch v8
-echo target_os = ['win'] >> .gclient
 cd v8
-call git checkout refs/tags/%VERSION%
-call gclient sync
+call git pull && gclient sync
 
 echo =====[ Building V8 ]=====
 call python3 tools\dev\v8gen.py x64.release -- v8_monolithic=true v8_use_external_startup_data=false use_custom_libcxx=false is_component_build=false treat_warnings_as_errors=false v8_symbol_level=0 is_clang=false
