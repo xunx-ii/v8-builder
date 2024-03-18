@@ -20,7 +20,7 @@ call git pull
 call gclient sync
 
 echo =====[ Building V8 ]=====
-call python3 tools\dev\v8gen.py x64.release -- v8_monolithic=true v8_use_external_startup_data=false use_custom_libcxx=false is_component_build=false treat_warnings_as_errors=false v8_symbol_level=0 is_clang=false
+call python3 tools\dev\v8gen.py x64.release -- v8_monolithic=true v8_optimized_debug=false v8_use_external_startup_data=false use_custom_libcxx=false is_component_build=false treat_warnings_as_errors=false v8_symbol_level=0 is_clang=false
 call ninja -C out.gn\x64.release v8_monolith
 
 md output\v8\Lib\Win64DLL
