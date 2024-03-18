@@ -20,7 +20,6 @@ jobs:
       shell: cmd
       run: |
         cd %GITHUB_WORKSPACE%
-        call npm i
         call .\win64.cmd ${{env.VERSION}}
     - name: Rename
       shell: bash

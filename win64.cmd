@@ -9,33 +9,18 @@ set GYP_MSVS_VERSION=2019
 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
 call gclient
 
-cd depot_tools
-call git reset --hard 8d16d4a
-cd ..
-set DEPOT_TOOLS_UPDATE=0
-
-
 mkdir v8
 cd v8
 
 echo =====[ Fetching V8 ]=====
 call fetch v8
+echo target_os = ['win'] >> .gclient
 cd v8
 call git checkout refs/tags/%VERSION%
-cd test\test262\data
-call git config --system core.longpaths true
-call git restore *
-cd ..\..\..\
 call gclient sync
 
 echo =====[ Make dynamic_crt ]=====
 node %~dp0\node-script\rep.js  build\config\win\BUILD.gn
-
-echo =====[ commenting out Zc_inline  ]=====
-node -e "const fs = require('fs'); fs.writeFileSync('./build/config/compiler/BUILD.gn', fs.readFileSync('./build/config/compiler/BUILD.gn', 'utf-8').replace('\"/Zc:inline\"', '#\"/Zc:inline\"'));
-
-echo =====[ add ArrayBuffer_New_Without_Stl ]=====
-node %~dp0\node-script\add_arraybuffer_new_without_stl.js .
 
 echo =====[ Building V8 ]=====
 call gn gen out.gn\x64.release -args="target_os=""win"" target_cpu=""x64"" v8_use_external_startup_data=false v8_enable_i18n_support=false is_debug=false is_clang=false strip_debug_info=true symbol_level=0 v8_enable_pointer_compression=false is_component_build=true"
