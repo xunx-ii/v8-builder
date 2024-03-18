@@ -15,7 +15,9 @@ cd v8
 echo =====[ Fetching V8 ]=====
 call fetch v8
 cd v8
-call git pull && gclient sync
+call git checkout %VERSION%
+call git pull
+call gclient sync
 
 echo =====[ Building V8 ]=====
 call python3 tools\dev\v8gen.py x64.release -- v8_monolithic=true v8_use_external_startup_data=false use_custom_libcxx=false is_component_build=false treat_warnings_as_errors=false v8_symbol_level=0 is_clang=false
